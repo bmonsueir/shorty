@@ -1,12 +1,20 @@
 Short = new Mongo.Collection("short");
- Meteor.startup(function () {
+if (Meteor.isClient) {
+    Meteor.startup(function() {
+       Session.set('short', false);
+    });
+
+    Meteor.subscribe('short', function(){
+       //Set the reactive session as true to indicate that the data have been loaded
+       Session.set('short', true);
+    });
      var controller = Iron.Location.get();
      var fullAddress = controller.href.split("/new/");
      var webAddress;
      var data = {};
      var index = 0;
      var short;
-         console.log(fullAddress);
+         //console.log(fullAddress);
      if(fullAddress.length > 1) {
          webAddress =  fullAddress[1];
      }
@@ -16,15 +24,21 @@ Short = new Mongo.Collection("short");
     //                  shortAddress: "0"});
     //     index++;
     //      }
-    short = Short.find().fetch();
-     console.log("main", short);
+    if(Session.get('short')){
+     short = Short.find().fetch();
+}
+
+     //console.log("main", short);
      if(webAddress) {
          //console.log(webAddress);
          if(Number.isInteger(parseInt(webAddress))){
              //redirect
              short = Short.findOne({"shortAddress" : webAddress});
               console.log("short", short);
-                if(short) Router.go(short.webAddress);
+                if(short) {
+                    console.log("hey");
+                    window.open(webAddress);
+                }
          } else {
             short = Short.findOne({"webAddress": webAddress});
             if(short){
@@ -34,4 +48,7 @@ Short = new Mongo.Collection("short");
             }
          }
      }
- });
+
+
+
+}

@@ -1,6 +1,6 @@
 <template name="shorty">
 {{#if data}}
   <p>Full Web Address: {{data.webAddress}}</p>
-  <p>Shortened Web Address: {{data.shortAddress}}</p>
+  <p>Shortened Web Address: <a href =  "{{data.webAddress}}" target='_blank'>{{data.shortAddress}}</a></p>
 {{/if}}
 </template>
