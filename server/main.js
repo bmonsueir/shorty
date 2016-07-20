@@ -1,6 +1,1 @@
-Short = new Mongo.Collection("short");
-if(Meteor.isServer) {
-    Meteor.publish('short', function(){
-        return Short.find({});
-    });
-}
+import '../imports/api/shorty.js';
