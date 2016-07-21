@@ -15,7 +15,12 @@ import { Short } from '../api/shorty.js';
         var fullAddress = controller.href.split("/new/");
         var address = fullAddress[1];
         var data;
-
+            if(address === "start"){
+                data = {"shortAddress": "0",
+                         "webAddress": "https://www.google.com"};
+                Meteor.call("writeData", data);
+                return null;
+            }
             if(address){
                 if(address % 1 === 0){
                     //console.log(address);
