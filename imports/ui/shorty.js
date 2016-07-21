@@ -1,8 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-
+import { ReactiveDict } from 'meteor/reactive-dict';
 
 import { Short } from '../api/shorty.js';
+
+    Template.shorty.onCreated(function () {
+      this.state = new ReactiveDict();
+      Meteor.subscribe('short');
+    });
 
     Template.shorty.helpers({
       data() {
@@ -15,16 +20,24 @@ import { Short } from '../api/shorty.js';
                 if(address % 1 === 0){
                     console.log(address);
                       //redirect
-
+                      return Short.findOne({"shortAddress": address});
+                  }
+            if(Short.findOne({"webAddress": address})) {
+                       return Short.findOne({"webAddress": address});
                    } else {
-                       console.log(Short.findOne({webAddress: address}));
-                    return Short.findOne({"webAddress": address});
-                   }
-            } else {
                //store new website
 
-               return null;
-            }
-        }
+               var index = Short.find().count();
+               if(index > 0){
+               data = {"shortAddress": index.toString(),
+                        "webAddress": address};
+                 console.log("writing", data);
 
+                //Short.insert(data);
+               Meteor.call("writeData", data);
+               return null;
+           }
+        }
+        }
+    }
     });
