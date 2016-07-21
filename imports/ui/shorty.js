@@ -18,7 +18,7 @@ import { Short } from '../api/shorty.js';
 
             if(address){
                 if(address % 1 === 0){
-                    console.log(address);
+                    //console.log(address);
                       //redirect
                       return Short.findOne({"shortAddress": address});
                   }
